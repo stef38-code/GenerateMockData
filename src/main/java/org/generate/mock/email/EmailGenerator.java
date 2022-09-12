@@ -20,16 +20,14 @@ public class EmailGenerator {
     public EmailGenerator(long size){
         this.size = size;
     }
-    public List<String> build(){
-        Supplier<String> supplier = getSupplier(GeneratorUserName.generateMaleUserName()
+
+    public static List<String> mailFemale(int size) {
+        String userName = GeneratorUserName.generateFemaleUserName()
                 .replace(" ", ".")
-                .toLowerCase(Locale.getDefault()));
+                .toLowerCase(Locale.getDefault());
+        Supplier<String> supplier = getSupplier(userName);
         return Stream.generate(supplier).limit(size).collect(Collectors.toList());
     }
-
-    
-
-
 
 
     /**
@@ -44,19 +42,18 @@ public class EmailGenerator {
         return Stream.generate(supplier).limit(size).collect(Collectors.toList());
     }
     public static List<String> mailMale(long size) {
-        String userName = GeneratorUserName.generateMaleUserName()
-                .replace(" ", ".")
-                .toLowerCase(Locale.getDefault());
-        Supplier<String> supplier = getSupplier(userName);
-        return Stream.generate(supplier).limit(size).collect(Collectors.toList());
+                String userName = GeneratorUserName.generateMaleUserName()
+                        .replace(" ", ".")
+                        .toLowerCase(Locale.getDefault());
+                Supplier<String> supplier = getSupplier(userName);
+                return Stream.generate(supplier).limit(size).collect(Collectors.toList());
     }
 
     private static Supplier<String> getSupplier(String userName) {
-        Supplier<String> supplier = () ->{
+        return () ->{
             List<String> domains = DictionaryDomain.domains();
             return randValue(userName,domains);
         };
-        return supplier;
     }
 
     private static String randValue(String userName,List<String> domains){
